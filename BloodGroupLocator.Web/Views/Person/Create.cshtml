@@ -4,16 +4,20 @@
     ViewData["Title"] = "Add New Person";
 }
 
-<!-- Header Section -->
-<section class="py-4 bg-gradient-primary text-white">
+<!-- Header -->
+<section class="py-4 bg-gradient-primary text-white shadow-sm">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8">
-                <h1 class="h2 fw-bold mb-2">➕ Register New Blood Donor</h1>
-                <p class="lead mb-0">Add a new person to the blood donor registry</p>
+                <h1 class="h2 fw-bold mb-2 text-white">
+                    <i class="fas fa-plus-circle me-2"></i> Register New Blood Donor
+                </h1>
+                <p class="lead mb-0 text-light fw-normal">
+                    Add a new person to the blood donor registry
+                </p>
             </div>
             <div class="col-lg-4 text-lg-end">
-                <a asp-action="Index" class="btn btn-light">
+                <a asp-action="Index" class="btn btn-outline-light">
                     <i class="fas fa-arrow-left me-2"></i>Back to Registry
                 </a>
             </div>
@@ -21,161 +25,139 @@
     </div>
 </section>
 
-<!-- Main Content -->
+
+<!-- Main -->
 <section class="py-5">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <div class="card border-0 shadow-lg">
-                    <div class="card-header bg-gradient-primary text-white">
+                <div class="card border-0 shadow-lg rounded-4">
+                    <div class="card-header bg-gradient-primary text-white rounded-top-4">
                         <h5 class="mb-0 fw-bold">
                             <i class="fas fa-user-plus me-2"></i>Donor Information
                         </h5>
                     </div>
+
                     <div class="card-body p-4">
-                        <form asp-action="Create" method="post" id="donorForm">
-                            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert">
+                        <form asp-action="Create" method="post" id="donorForm" novalidate>
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger d-none" role="alert" id="validationSummary">
                                 <h6 class="alert-heading">
                                     <i class="fas fa-exclamation-triangle me-2"></i>Please correct the following errors:
                                 </h6>
                             </div>
-                            
-                            <!-- Personal Information Section -->
+
+                            <!-- Personal Info -->
                             <div class="form-section mb-4">
                                 <h6 class="section-title">
                                     <i class="fas fa-user me-2"></i>Personal Information
                                 </h6>
-                                <div class="row">
+                                <div class="row g-3">
                                     <div class="col-md-6">
-                                        <div class="form-floating mb-3">
-                                            <input asp-for="Name" class="form-control" placeholder="Enter full name" />
+                                        <div class="form-floating">
+                                            <input asp-for="Name" class="form-control" placeholder="Full Name" required />
                                             <label asp-for="Name">Full Name *</label>
-                                            <span asp-validation-for="Name" class="text-danger"></span>
+                                            <span asp-validation-for="Name" class="text-danger small"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-floating mb-3">
-                                            <select asp-for="BloodGroup" class="form-select">
+                                        <div class="form-floating">
+                                            <select asp-for="BloodGroup" class="form-select" required>
                                                 <option value="">Select Blood Group</option>
-                                                <option value="A+">A+</option>
-                                                <option value="A-">A-</option>
-                                                <option value="B+">B+</option>
-                                                <option value="B-">B-</option>
-                                                <option value="AB+">AB+</option>
-                                                <option value="AB-">AB-</option>
-                                                <option value="O+">O+</option>
-                                                <option value="O-">O-</option>
+                                                @foreach (var bg in new[] { "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-" })
+                                                {
+                                                    <option value="@bg">@bg</option>
+                                                }
                                             </select>
                                             <label asp-for="BloodGroup">Blood Group *</label>
-                                            <span asp-validation-for="BloodGroup" class="text-danger"></span>
+                                            <span asp-validation-for="BloodGroup" class="text-danger small"></span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Address Section -->
+                            <!-- Location -->
                             <div class="form-section mb-4">
                                 <h6 class="section-title">
                                     <i class="fas fa-map-marker-alt me-2"></i>Location Information
                                 </h6>
                                 <div class="form-floating mb-3">
-                                    <textarea asp-for="Address" class="form-control" style="height: 100px" placeholder="Enter full address"></textarea>
+                                    <textarea asp-for="Address" class="form-control" style="height:100px" placeholder="Address" required></textarea>
                                     <label asp-for="Address">Address *</label>
-                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                    <span asp-validation-for="Address" class="text-danger small"></span>
                                 </div>
-                                
-                                <div class="row">
+                                <div class="row g-3">
                                     <div class="col-md-6">
-                                        <div class="form-floating mb-3">
-                                            <input asp-for="Latitude" class="form-control" type="number" step="any" placeholder="Enter latitude" />
+                                        <div class="form-floating">
+                                            <input asp-for="Latitude" type="number" step="any" class="form-control" placeholder="Latitude" />
                                             <label asp-for="Latitude">Latitude (Optional)</label>
-                                            <span asp-validation-for="Latitude" class="text-danger"></span>
                                             <small class="form-text text-muted">
-                                                <i class="fas fa-info-circle me-1"></i>For precise location-based search
+                                                <i class="fas fa-info-circle me-1"></i>Precise donor search
                                             </small>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-floating mb-3">
-                                            <input asp-for="Longitude" class="form-control" type="number" step="any" placeholder="Enter longitude" />
+                                        <div class="form-floating">
+                                            <input asp-for="Longitude" type="number" step="any" class="form-control" placeholder="Longitude" />
                                             <label asp-for="Longitude">Longitude (Optional)</label>
-                                            <span asp-validation-for="Longitude" class="text-danger"></span>
                                             <small class="form-text text-muted">
-                                                <i class="fas fa-info-circle me-1"></i>For precise location-based search
+                                                <i class="fas fa-info-circle me-1"></i>Precise donor search
                                             </small>
                                         </div>
                                     </div>
                                 </div>
+                                <button type="button" id="autoLocate" class="btn btn-outline-primary btn-sm mt-3">
+                                    <i class="fas fa-location-crosshairs me-2"></i>Use Current Location
+                                </button>
                             </div>
 
-                            <!-- Contact Information Section -->
+                            <!-- Contact Info -->
                             <div class="form-section mb-4">
                                 <h6 class="section-title">
                                     <i class="fas fa-phone me-2"></i>Contact Information
                                 </h6>
-                                <div class="row">
+                                <div class="row g-3">
                                     <div class="col-md-6">
-                                        <div class="form-floating mb-3">
-                                            <input asp-for="Phone" class="form-control" placeholder="Enter phone number" />
+                                        <div class="form-floating">
+                                            <input asp-for="Phone" class="form-control" placeholder="Phone Number" inputmode="tel" />
                                             <label asp-for="Phone">Phone Number</label>
-                                            <span asp-validation-for="Phone" class="text-danger"></span>
+                                            <span asp-validation-for="Phone" class="text-danger small"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-floating mb-3">
-                                            <input asp-for="Email" class="form-control" type="email" placeholder="Enter email address" />
+                                        <div class="form-floating">
+                                            <input asp-for="Email" class="form-control" type="email" placeholder="Email Address" />
                                             <label asp-for="Email">Email Address</label>
-                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                            <span asp-validation-for="Email" class="text-danger small"></span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Form Actions -->
-                            <div class="form-actions d-flex justify-content-between align-items-center pt-3 border-top">
-                                <a asp-action="Index" class="btn btn-secondary">
+                            <!-- Actions -->
+                            <div class="form-actions d-flex justify-content-between align-items-center border-top pt-3 mt-4">
+                                <a asp-action="Index" class="btn btn-outline-secondary">
                                     <i class="fas fa-arrow-left me-2"></i>Cancel
                                 </a>
-                                <button type="submit" class="btn btn-primary btn-lg">
+                                <button type="submit" class="btn btn-primary btn-lg shadow-sm">
                                     <i class="fas fa-save me-2"></i>Register Donor
                                 </button>
                             </div>
                         </form>
                     </div>
                 </div>
-                
-                <!-- Help Section -->
+
+                <!-- Tips -->
                 <div class="card border-0 shadow-sm mt-4">
                     <div class="card-body">
                         <h6 class="fw-bold text-primary mb-3">
                             <i class="fas fa-lightbulb me-2"></i>Registration Tips
                         </h6>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <ul class="list-unstyled">
-                                    <li class="mb-2">
-                                        <i class="fas fa-check text-success me-2"></i>
-                                        <strong>Accurate Information:</strong> Ensure all details are correct
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="fas fa-check text-success me-2"></i>
-                                        <strong>Contact Details:</strong> Provide at least one contact method
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-md-6">
-                                <ul class="list-unstyled">
-                                    <li class="mb-2">
-                                        <i class="fas fa-check text-success me-2"></i>
-                                        <strong>Location:</strong> GPS coordinates help with precise searches
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="fas fa-check text-success me-2"></i>
-                                        <strong>Privacy:</strong> Information is secure and used for emergencies only
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                        <ul class="list-unstyled mb-0 row">
+                            <li class="col-md-6 mb-2"><i class="fas fa-check text-success me-2"></i><strong>Accurate Info:</strong> Verify all fields</li>
+                            <li class="col-md-6 mb-2"><i class="fas fa-check text-success me-2"></i><strong>Contact:</strong> Provide at least one method</li>
+                            <li class="col-md-6 mb-2"><i class="fas fa-check text-success me-2"></i><strong>Location:</strong> GPS helps searches</li>
+                            <li class="col-md-6 mb-2"><i class="fas fa-check text-success me-2"></i><strong>Privacy:</strong> Used for emergencies only</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -183,91 +165,97 @@
     </div>
 </section>
 
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // Validation enhancement
+        const form = document.getElementById('donorForm');
+        form.addEventListener('submit', e => {
+            const invalidFields = form.querySelectorAll('[required]:invalid');
+            if (invalidFields.length > 0) {
+                e.preventDefault();
+                document.getElementById('validationSummary').classList.remove('d-none');
+                invalidFields[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+
+        // Real-time feedback
+        document.querySelectorAll('[required]').forEach(field => {
+            field.addEventListener('input', () => field.classList.remove('is-invalid'));
+        });
+
+        // Auto-location
+        document.getElementById('autoLocate').addEventListener('click', () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(pos => {
+                    document.getElementById('Latitude').value = pos.coords.latitude.toFixed(6);
+                    document.getElementById('Longitude').value = pos.coords.longitude.toFixed(6);
+                }, () => alert('Unable to get your location.'));
+            } else {
+                alert('Geolocation is not supported by your browser.');
+            }
+        });
+    </script>
+}
+
 <style>
-.form-section {
-    position: relative;
-}
+    :root {
+        --primary-color: #dc3545;
+        --primary-light: rgba(220, 53, 69, 0.2);
+    }
 
-.section-title {
-    color: var(--primary-color);
-    font-weight: 600;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--primary-light);
-}
+    .form-section {
+        position: relative;
+    }
 
-.form-floating > .form-control:focus ~ label,
-.form-floating > .form-control:not(:placeholder-shown) ~ label {
-    color: var(--primary-color);
-}
+    .section-title {
+        color: var(--primary-color);
+        font-weight: 600;
+        border-bottom: 2px solid var(--primary-light);
+        padding-bottom: .4rem;
+        margin-bottom: 1rem;
+    }
 
-.form-actions {
-    background: rgba(220, 53, 69, 0.05);
-    margin: 0 -2rem -2rem -2rem;
-    padding: 1.5rem 2rem;
-}
+    .form-actions {
+        background: rgba(220, 53, 69, 0.05);
+        border-radius: 0 0 1rem 1rem;
+    }
 
-.alert-danger {
-    border-left: 4px solid var(--primary-color);
-}
+    .card {
+        animation: slideIn .5s ease-out;
+        border-radius: 1rem;
+    }
 
-.alert-heading {
-    font-size: 1rem;
-}
+    @@keyframes slideIn {
+        from
 
-@@keyframes slideIn {
-    from {
+    {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
     }
-}
 
-.card {
-    animation: slideIn 0.6s ease-out;
-}
+    }
+
+    .btn-outline-primary:hover {
+        background-color: var(--primary-color);
+        color: #fff;
+    }
+
+    .bg-gradient-primary {
+        background: linear-gradient(90deg, #dc3545, #b92b3c); /* Red gradient */
+    }
+
+    section h1,
+    section p {
+        color: #fff !important; /* Force text to stay white */
+    }
+
 </style>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    
-    <script>
-        // Form validation enhancement
-        document.getElementById('donorForm').addEventListener('submit', function(e) {
-            const requiredFields = document.querySelectorAll('[required]');
-            let isValid = true;
-            
-            requiredFields.forEach(field => {
-                if (!field.value.trim()) {
-                    isValid = false;
-                    field.classList.add('is-invalid');
-                } else {
-                    field.classList.remove('is-invalid');
-                }
-            });
-            
-            if (!isValid) {
-                e.preventDefault();
-                // Scroll to first invalid field
-                const firstInvalid = document.querySelector('.is-invalid');
-                if (firstInvalid) {
-                    firstInvalid.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-        });
-        
-        // Real-time validation
-        document.querySelectorAll('input, select, textarea').forEach(field => {
-            field.addEventListener('blur', function() {
-                if (this.hasAttribute('required') && !this.value.trim()) {
-                    this.classList.add('is-invalid');
-                } else {
-                    this.classList.remove('is-invalid');
-                }
-            });
-        });
-    </script>
-}

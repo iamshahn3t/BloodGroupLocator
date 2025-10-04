@@ -284,18 +284,11 @@
                 navigator.geolocation.getCurrentPosition(
                     function(position) {
                         // Add location to form and submit
-                        const latitudeInput = document.createElement('input');
-                        latitudeInput.type = 'hidden';
-                        latitudeInput.name = 'latitude';
+                        const latitudeInput = document.querySelector('[name="latitude"]');
+                       
                         latitudeInput.value = position.coords.latitude;
-                        
-                        const longitudeInput = document.createElement('input');
-                        longitudeInput.type = 'hidden';
-                        longitudeInput.name = 'longitude';
+                        const longitudeInput = document.querySelector('[name="longitude"]');
                         longitudeInput.value = position.coords.longitude;
-                        
-                        locateForm.appendChild(latitudeInput);
-                        locateForm.appendChild(longitudeInput);
                         locateForm.submit();
                     },
                     function(error) {
