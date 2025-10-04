@@ -1,0 +1,98 @@
+﻿@{
+    ViewData["Title"] = "Blood Group Locator";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="text-center mb-5">
+                <h1 class="display-4 text-danger mb-4">🩸 Blood Group Locator</h1>
+                <p class="lead text-muted">Find people with specific blood groups near you when you need them most</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-danger">
+                        <div class="card-body text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-search fa-3x text-danger"></i>
+                            </div>
+                            <h4 class="card-title">Find Blood Groups</h4>
+                            <p class="card-text">Search for people with specific blood groups in your area. Use location-based search to find the nearest matches.</p>
+                            <a asp-action="Locate" class="btn btn-danger btn-lg">
+                                <i class="fas fa-search"></i> Start Search
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-primary">
+                        <div class="card-body text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-user-plus fa-3x text-primary"></i>
+                            </div>
+                            <h4 class="card-title">Add People</h4>
+                            <p class="card-text">Register yourself or others in the system to help build a comprehensive blood group database for your community.</p>
+                            <a asp-controller="Person" asp-action="Create" class="btn btn-primary btn-lg">
+                                <i class="fas fa-user-plus"></i> Add Person
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-success">
+                        <div class="card-body text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-list fa-3x text-success"></i>
+                            </div>
+                            <h4 class="card-title">View All People</h4>
+                            <p class="card-text">Browse through all registered people in the system. Manage and update information as needed.</p>
+                            <a asp-controller="Person" asp-action="Index" class="btn btn-success btn-lg">
+                                <i class="fas fa-list"></i> View All
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-warning">
+                        <div class="card-body text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-info-circle fa-3x text-warning"></i>
+                            </div>
+                            <h4 class="card-title">About</h4>
+                            <p class="card-text">Learn more about blood group compatibility and how this system works to help save lives.</p>
+                            <a asp-action="Privacy" class="btn btn-warning btn-lg">
+                                <i class="fas fa-info-circle"></i> Learn More
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-5">
+                <div class="alert alert-info">
+                    <h5><i class="fas fa-heart text-danger"></i> How Blood Group Locator Works:</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul>
+                                <li><strong>Register:</strong> Add people with their blood group and location</li>
+                                <li><strong>Search:</strong> Find people with specific blood groups near you</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul>
+                                <li><strong>Contact:</strong> Get in touch with potential donors</li>
+                                <li><strong>Help:</strong> Build a community network for emergency situations</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

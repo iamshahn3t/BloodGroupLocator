@@ -1,0 +1,139 @@
+@{
+    ViewData["Title"] = "Locate Blood Group";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="text-center mb-4">🔍 Locate Blood Group</h1>
+            <p class="text-center text-muted mb-4">Find people with specific blood groups near you</p>
+            
+            <div class="card">
+                <div class="card-body">
+                    <form asp-action="Locate" method="post" id="locateForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="bloodGroup" class="form-label">Blood Group *</label>
+                                    <select name="bloodGroup" id="bloodGroup" class="form-select" required>
+                                        <option value="">Select Blood Group</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="radius" class="form-label">Search Radius (km)</label>
+                                    <select name="radius" id="radius" class="form-select">
+                                        <option value="10">10 km</option>
+                                        <option value="25">25 km</option>
+                                        <option value="50" selected>50 km</option>
+                                        <option value="100">100 km</option>
+                                        <option value="200">200 km</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="useLocation" checked>
+                                <label class="form-check-label" for="useLocation">
+                                    Use my current location
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="manualLocation" style="display: none;">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="latitude" class="form-label">Latitude</label>
+                                        <input type="number" name="latitude" id="latitude" class="form-control" step="any" placeholder="Enter latitude">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="longitude" class="form-label">Longitude</label>
+                                        <input type="number" name="longitude" id="longitude" class="form-control" step="any" placeholder="Enter longitude">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-search"></i> Search for Blood Group
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <div class="alert alert-info">
+                    <h5><i class="fas fa-info-circle"></i> How it works:</h5>
+                    <ul class="mb-0">
+                        <li>Select the blood group you need</li>
+                        <li>Choose your search radius</li>
+                        <li>Allow location access or enter coordinates manually</li>
+                        <li>Find people with matching blood groups near you</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('useLocation').addEventListener('change', function() {
+        const manualLocation = document.getElementById('manualLocation');
+        if (this.checked) {
+            manualLocation.style.display = 'none';
+            // Get current location
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    // Location will be sent via JavaScript when form is submitted
+                });
+            }
+        } else {
+            manualLocation.style.display = 'block';
+        }
+    });
+
+    document.getElementById('locateForm').addEventListener('submit', function(e) {
+        const useLocation = document.getElementById('useLocation').checked;
+        
+        if (useLocation && navigator.geolocation) {
+            e.preventDefault();
+            navigator.geolocation.getCurrentPosition(function(position) {
+                // Add location to form and submit
+                const form = document.getElementById('locateForm');
+                const latitudeInput = document.createElement('input');
+                latitudeInput.type = 'hidden';
+                latitudeInput.name = 'latitude';
+                latitudeInput.value = position.coords.latitude;
+                
+                const longitudeInput = document.createElement('input');
+                longitudeInput.type = 'hidden';
+                longitudeInput.name = 'longitude';
+                longitudeInput.value = position.coords.longitude;
+                
+                form.appendChild(latitudeInput);
+                form.appendChild(longitudeInput);
+                form.submit();
+            }, function(error) {
+                alert('Unable to get your location. Please enter coordinates manually.');
+                document.getElementById('useLocation').checked = false;
+                document.getElementById('manualLocation').style.display = 'block';
+            });
+        }
+    });
+</script>

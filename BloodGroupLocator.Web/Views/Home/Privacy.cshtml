@@ -1,0 +1,114 @@
+﻿@{
+    ViewData["Title"] = "About Blood Group Locator";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="text-center mb-4">About Blood Group Locator</h1>
+            
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="text-danger">🩸 Our Mission</h2>
+                    <p class="lead">Blood Group Locator is designed to help people find blood donors quickly in emergency situations by connecting those in need with potential donors in their area.</p>
+                    
+                    <h3 class="mt-4">How It Works</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5><i class="fas fa-user-plus text-primary"></i> Registration</h5>
+                            <p>People can register themselves in the system with their blood group, contact information, and location details.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5><i class="fas fa-search text-danger"></i> Search</h5>
+                            <p>Users can search for people with specific blood groups within a certain radius of their location.</p>
+                        </div>
+                    </div>
+                    
+                    <h3 class="mt-4">Blood Group Compatibility</h3>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Blood Group</th>
+                                    <th>Can Donate To</th>
+                                    <th>Can Receive From</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="badge bg-danger">A+</span></td>
+                                    <td>A+, AB+</td>
+                                    <td>A+, A-, O+, O-</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge bg-danger">A-</span></td>
+                                    <td>A+, A-, AB+, AB-</td>
+                                    <td>A-, O-</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge bg-danger">B+</span></td>
+                                    <td>B+, AB+</td>
+                                    <td>B+, B-, O+, O-</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge bg-danger">B-</span></td>
+                                    <td>B+, B-, AB+, AB-</td>
+                                    <td>B-, O-</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge bg-danger">AB+</span></td>
+                                    <td>AB+</td>
+                                    <td>All blood groups (Universal Recipient)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge bg-danger">AB-</span></td>
+                                    <td>AB+, AB-</td>
+                                    <td>A-, B-, AB-, O-</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge bg-danger">O+</span></td>
+                                    <td>A+, B+, AB+, O+</td>
+                                    <td>O+, O-</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge bg-danger">O-</span></td>
+                                    <td>All blood groups (Universal Donor)</td>
+                                    <td>O-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <h3 class="mt-4">Safety & Privacy</h3>
+                    <div class="alert alert-info">
+                        <h5><i class="fas fa-shield-alt"></i> Important Notes:</h5>
+                        <ul class="mb-0">
+                            <li>This system is for emergency situations only</li>
+                            <li>Always verify blood compatibility before any transfusion</li>
+                            <li>Contact medical professionals for proper blood testing</li>
+                            <li>Personal information is stored securely and used only for emergency contact</li>
+                            <li>Users can update or remove their information at any time</li>
+                        </ul>
+                    </div>
+                    
+                    <h3 class="mt-4">Getting Started</h3>
+                    <ol>
+                        <li><strong>Register:</strong> Add your blood group and contact information</li>
+                        <li><strong>Search:</strong> Use the search feature to find compatible blood groups</li>
+                        <li><strong>Contact:</strong> Reach out to potential donors in emergency situations</li>
+                        <li><strong>Help:</strong> Be available to help others in need</li>
+                    </ol>
+                    
+                    <div class="text-center mt-4">
+                        <a asp-action="Index" class="btn btn-primary btn-lg">
+                            <i class="fas fa-home"></i> Back to Home
+                        </a>
+                        <a asp-controller="Person" asp-action="Create" class="btn btn-danger btn-lg ms-2">
+                            <i class="fas fa-user-plus"></i> Register Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

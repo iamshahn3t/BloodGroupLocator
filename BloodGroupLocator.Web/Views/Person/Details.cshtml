@@ -1,0 +1,94 @@
+@model BloodGroupLocator.Web.Models.Person
+
+@{
+    ViewData["Title"] = "Person Details";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="text-center mb-4">Person Details</h1>
+            
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Personal Information</h5>
+                            <dl class="row">
+                                <dt class="col-sm-4">Name:</dt>
+                                <dd class="col-sm-8">@Model.Name</dd>
+                                
+                                <dt class="col-sm-4">Blood Group:</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge bg-danger fs-6">@Model.BloodGroup</span>
+                                </dd>
+                                
+                                <dt class="col-sm-4">Address:</dt>
+                                <dd class="col-sm-8">@Model.Address</dd>
+                                
+                                <dt class="col-sm-4">Phone:</dt>
+                                <dd class="col-sm-8">@(Model.Phone ?? "Not provided")</dd>
+                                
+                                <dt class="col-sm-4">Email:</dt>
+                                <dd class="col-sm-8">@(Model.Email ?? "Not provided")</dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Location Information</h5>
+                            <dl class="row">
+                                <dt class="col-sm-4">Latitude:</dt>
+                                <dd class="col-sm-8">@(Model.Latitude?.ToString("F6") ?? "Not provided")</dd>
+                                
+                                <dt class="col-sm-4">Longitude:</dt>
+                                <dd class="col-sm-8">@(Model.Longitude?.ToString("F6") ?? "Not provided")</dd>
+                                
+                                <dt class="col-sm-4">Created:</dt>
+                                <dd class="col-sm-8">@Model.CreatedAt.ToString("MMM dd, yyyy")</dd>
+                                
+                                <dt class="col-sm-4">Updated:</dt>
+                                <dd class="col-sm-8">@Model.UpdatedAt.ToString("MMM dd, yyyy")</dd>
+                            </dl>
+                        </div>
+                    </div>
+                    
+                    @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
+                    {
+                        <div class="mt-4">
+                            <h5>Location on Map</h5>
+                            <div id="map" style="height: 300px; width: 100%;"></div>
+                        </div>
+                    }
+                </div>
+                
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning me-2">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.Latitude.HasValue && Model.Longitude.HasValue)
+{
+    <script>
+        function initMap() {
+            var location = { lat: @Model.Latitude.Value, lng: @Model.Longitude.Value };
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: location
+            });
+            var marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                title: '@Model.Name'
+            });
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
+}
