@@ -2,19 +2,41 @@
     ViewData["Title"] = "Locate Blood Group";
 }
 
+<!-- Header Section -->
+<section class="py-4 bg-gradient-primary text-white mb-4">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="h2 fw-bold mb-2">🔍 Find Blood Donors</h1>
+                <p class="lead mb-0">Search for specific blood groups in your area</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <a asp-action="Index" class="btn btn-light">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h1 class="text-center mb-4">🔍 Locate Blood Group</h1>
-            <p class="text-center text-muted mb-4">Find people with specific blood groups near you</p>
-            
-            <div class="card">
-                <div class="card-body">
-                    <form asp-action="Locate" method="post" id="locateForm">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="bloodGroup" class="form-label">Blood Group *</label>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-lg">
+                    <div class="card-header bg-gradient-primary text-white">
+                        <h5 class="mb-0 fw-bold">
+                            <i class="fas fa-search me-2"></i>Blood Group Search
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <form asp-action="Locate" method="post" id="locateForm">
+                            <!-- Blood Group Selection -->
+                            <div class="form-section mb-4">
+                                <h6 class="section-title">
+                                    <i class="fas fa-tint me-2"></i>Blood Group Required
+                                </h6>
+                                <div class="form-floating mb-3">
                                     <select name="bloodGroup" id="bloodGroup" class="form-select" required>
                                         <option value="">Select Blood Group</option>
                                         <option value="A+">A+</option>
@@ -26,114 +48,296 @@
                                         <option value="O+">O+</option>
                                         <option value="O-">O-</option>
                                     </select>
+                                    <label for="bloodGroup">Blood Group *</label>
                                 </div>
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <strong>Blood Group Compatibility:</strong> O- can donate to all, AB+ can receive from all.
+                                </div>
+                            </div>
+
+                            <!-- Search Radius -->
+                            <div class="form-section mb-4">
+                                <h6 class="section-title">
+                                    <i class="fas fa-map-marker-alt me-2"></i>Search Area
+                                </h6>
+                                <div class="form-floating mb-3">
+                                    <select name="radius" id="radius" class="form-select">
+                                        <option value="10">10 km - Local area</option>
+                                        <option value="25">25 km - Nearby cities</option>
+                                        <option value="50" selected>50 km - Regional area</option>
+                                        <option value="100">100 km - Extended region</option>
+                                        <option value="200">200 km - Wide area</option>
+                                    </select>
+                                    <label for="radius">Search Radius</label>
+                                </div>
+                            </div>
+
+                            <!-- Location Options -->
+                            <div class="form-section mb-4">
+                                <h6 class="section-title">
+                                    <i class="fas fa-location-arrow me-2"></i>Location Settings
+                                </h6>
+                                
+                                <div class="mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="useLocation" checked>
+                                        <label class="form-check-label fw-bold" for="useLocation">
+                                            <i class="fas fa-crosshairs me-2"></i>Use my current location
+                                        </label>
+                                    </div>
+                                    <small class="form-text text-muted">
+                                        Allow browser to access your location for accurate search results
+                                    </small>
+                                </div>
+
+                                <div id="manualLocation" style="display: none;" class="manual-location-section">
+                                    <div class="alert alert-warning">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        <strong>Manual Location:</strong> Enter coordinates manually if location access is not available
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+                                                <input type="number" name="latitude" id="latitude" class="form-control" step="any" placeholder="Enter latitude">
+                                                <label for="latitude">Latitude</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+                                                <input type="number" name="longitude" id="longitude" class="form-control" step="any" placeholder="Enter longitude">
+                                                <label for="longitude">Longitude</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Search Button -->
+                            <div class="form-actions d-flex justify-content-center pt-3 border-top">
+                                <button type="submit" class="btn btn-primary btn-lg" id="searchBtn">
+                                    <i class="fas fa-search me-2"></i>Search for Blood Group
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Help Section -->
+                <div class="card border-0 shadow-sm mt-4">
+                    <div class="card-body">
+                        <h6 class="fw-bold text-primary mb-3">
+                            <i class="fas fa-lightbulb me-2"></i>Search Tips
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        <strong>Emergency:</strong> Use smaller radius for urgent needs
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        <strong>Location:</strong> Allow location access for best results
+                                    </li>
+                                </ul>
                             </div>
                             <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="radius" class="form-label">Search Radius (km)</label>
-                                    <select name="radius" id="radius" class="form-select">
-                                        <option value="10">10 km</option>
-                                        <option value="25">25 km</option>
-                                        <option value="50" selected>50 km</option>
-                                        <option value="100">100 km</option>
-                                        <option value="200">200 km</option>
-                                    </select>
-                                </div>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        <strong>Compatibility:</strong> Check blood group compatibility chart
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        <strong>Contact:</strong> Call donors immediately in emergencies
+                                    </li>
+                                </ul>
                             </div>
                         </div>
-
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="useLocation" checked>
-                                <label class="form-check-label" for="useLocation">
-                                    Use my current location
-                                </label>
-                            </div>
-                        </div>
-
-                        <div id="manualLocation" style="display: none;">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="latitude" class="form-label">Latitude</label>
-                                        <input type="number" name="latitude" id="latitude" class="form-control" step="any" placeholder="Enter latitude">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="longitude" class="form-label">Longitude</label>
-                                        <input type="number" name="longitude" id="longitude" class="form-control" step="any" placeholder="Enter longitude">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fas fa-search"></i> Search for Blood Group
-                            </button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
 
-            <div class="mt-4">
-                <div class="alert alert-info">
-                    <h5><i class="fas fa-info-circle"></i> How it works:</h5>
-                    <ul class="mb-0">
-                        <li>Select the blood group you need</li>
-                        <li>Choose your search radius</li>
-                        <li>Allow location access or enter coordinates manually</li>
-                        <li>Find people with matching blood groups near you</li>
-                    </ul>
+                <!-- Blood Group Compatibility Chart -->
+                <div class="card border-0 shadow-sm mt-4">
+                    <div class="card-body">
+                        <h6 class="fw-bold text-primary mb-3">
+                            <i class="fas fa-heart me-2"></i>Blood Group Compatibility
+                        </h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Blood Group</th>
+                                        <th>Can Donate To</th>
+                                        <th>Can Receive From</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge bg-danger">O-</span></td>
+                                        <td>All blood groups</td>
+                                        <td>O- only</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-danger">O+</span></td>
+                                        <td>O+, A+, B+, AB+</td>
+                                        <td>O+, O-</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-danger">A-</span></td>
+                                        <td>A+, A-, AB+, AB-</td>
+                                        <td>A-, O-</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-danger">A+</span></td>
+                                        <td>A+, AB+</td>
+                                        <td>A+, A-, O+, O-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 </div>
 
-<script>
-    document.getElementById('useLocation').addEventListener('change', function() {
-        const manualLocation = document.getElementById('manualLocation');
-        if (this.checked) {
-            manualLocation.style.display = 'none';
-            // Get current location
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    // Location will be sent via JavaScript when form is submitted
-                });
-            }
-        } else {
-            manualLocation.style.display = 'block';
-        }
-    });
+<style>
+.form-section {
+    position: relative;
+}
 
-    document.getElementById('locateForm').addEventListener('submit', function(e) {
-        const useLocation = document.getElementById('useLocation').checked;
-        
-        if (useLocation && navigator.geolocation) {
-            e.preventDefault();
-            navigator.geolocation.getCurrentPosition(function(position) {
-                // Add location to form and submit
-                const form = document.getElementById('locateForm');
-                const latitudeInput = document.createElement('input');
-                latitudeInput.type = 'hidden';
-                latitudeInput.name = 'latitude';
-                latitudeInput.value = position.coords.latitude;
+.section-title {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary-light);
+}
+
+.form-actions {
+    background: rgba(220, 53, 69, 0.05);
+    margin: 0 -2rem -2rem -2rem;
+    padding: 1.5rem 2rem;
+}
+
+.manual-location-section {
+    animation: slideDown 0.3s ease-out;
+}
+
+@@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+#searchBtn {
+    min-width: 200px;
+}
+
+#searchBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const useLocationCheckbox = document.getElementById('useLocation');
+        const manualLocationDiv = document.getElementById('manualLocation');
+        const locateForm = document.getElementById('locateForm');
+        const searchBtn = document.getElementById('searchBtn');
+
+        // Toggle manual location input
+        useLocationCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                manualLocationDiv.style.display = 'none';
+            } else {
+                manualLocationDiv.style.display = 'block';
+            }
+        });
+
+        // Form submission with location handling
+        locateForm.addEventListener('submit', function(e) {
+            const useLocation = useLocationCheckbox.checked;
+            
+            if (useLocation && navigator.geolocation) {
+                e.preventDefault();
+                searchBtn.disabled = true;
+                searchBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Getting Location...';
                 
-                const longitudeInput = document.createElement('input');
-                longitudeInput.type = 'hidden';
-                longitudeInput.name = 'longitude';
-                longitudeInput.value = position.coords.longitude;
-                
-                form.appendChild(latitudeInput);
-                form.appendChild(longitudeInput);
-                form.submit();
-            }, function(error) {
-                alert('Unable to get your location. Please enter coordinates manually.');
-                document.getElementById('useLocation').checked = false;
-                document.getElementById('manualLocation').style.display = 'block';
-            });
-        }
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        // Add location to form and submit
+                        const latitudeInput = document.createElement('input');
+                        latitudeInput.type = 'hidden';
+                        latitudeInput.name = 'latitude';
+                        latitudeInput.value = position.coords.latitude;
+                        
+                        const longitudeInput = document.createElement('input');
+                        longitudeInput.type = 'hidden';
+                        longitudeInput.name = 'longitude';
+                        longitudeInput.value = position.coords.longitude;
+                        
+                        locateForm.appendChild(latitudeInput);
+                        locateForm.appendChild(longitudeInput);
+                        locateForm.submit();
+                    },
+                    function(error) {
+                        searchBtn.disabled = false;
+                        searchBtn.innerHTML = '<i class="fas fa-search me-2"></i>Search for Blood Group';
+                        
+                        let errorMessage = 'Unable to get your location. ';
+                        switch(error.code) {
+                            case error.PERMISSION_DENIED:
+                                errorMessage += 'Please allow location access or enter coordinates manually.';
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                errorMessage += 'Location information is unavailable.';
+                                break;
+                            case error.TIMEOUT:
+                                errorMessage += 'Location request timed out.';
+                                break;
+                            default:
+                                errorMessage += 'An unknown error occurred.';
+                                break;
+                        }
+                        
+                        alert(errorMessage);
+                        useLocationCheckbox.checked = false;
+                        manualLocationDiv.style.display = 'block';
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 60000
+                    }
+                );
+            }
+        });
+
+        // Real-time validation
+        document.getElementById('bloodGroup').addEventListener('change', function() {
+            if (this.value) {
+                this.classList.remove('is-invalid');
+            } else {
+                this.classList.add('is-invalid');
+            }
+        });
     });
 </script>

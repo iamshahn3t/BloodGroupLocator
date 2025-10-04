@@ -4,65 +4,238 @@
     ViewData["Title"] = "Blood Group Locator - Manage People";
 }
 
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="text-center mb-4">Blood Group Locator</h1>
-            <p class="text-center text-muted mb-4">Manage people and their blood group information</p>
-            
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2>People</h2>
-                <a asp-action="Create" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Add New Person
+<!-- Header Section -->
+<section class="py-4 bg-gradient-primary text-white mb-4">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="h2 fw-bold mb-2">👥 Blood Donor Registry</h1>
+                <p class="lead mb-0">Manage registered blood donors and their information</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <a asp-action="Create" class="btn btn-light btn-lg">
+                    <i class="fas fa-user-plus me-2"></i>Add New Donor
                 </a>
             </div>
-
-            @if (Model.Any())
-            {
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Name</th>
-                                <th>Blood Group</th>
-                                <th>Address</th>
-                                <th>Phone</th>
-                                <th>Email</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var person in Model)
-                            {
-                                <tr>
-                                    <td>@person.Name</td>
-                                    <td>
-                                        <span class="badge bg-danger">@person.BloodGroup</span>
-                                    </td>
-                                    <td>@person.Address</td>
-                                    <td>@person.Phone</td>
-                                    <td>@person.Email</td>
-                                    <td>
-                                        <div class="btn-group" role="group">
-                                            <a asp-action="Details" asp-route-id="@person.Id" class="btn btn-sm btn-outline-info">Details</a>
-                                            <a asp-action="Edit" asp-route-id="@person.Id" class="btn btn-sm btn-outline-warning">Edit</a>
-                                            <a asp-action="Delete" asp-route-id="@person.Id" class="btn btn-sm btn-outline-danger">Delete</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            }
-            else
-            {
-                <div class="alert alert-info text-center">
-                    <h4>No people found</h4>
-                    <p>Start by adding some people to the system.</p>
-                    <a asp-action="Create" class="btn btn-primary">Add First Person</a>
-                </div>
-            }
         </div>
     </div>
+</section>
+
+<!-- Main Content -->
+<div class="container">
+        @if (Model.Any())
+        {
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3 mb-3">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-users fa-2x text-primary mb-2"></i>
+                            <h4 class="fw-bold text-primary">@Model.Count()</h4>
+                            <p class="text-muted mb-0">Total Donors</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-map-marker-alt fa-2x text-danger mb-2"></i>
+                            <h4 class="fw-bold text-danger">@Model.Count(p => p.Latitude.HasValue && p.Longitude.HasValue)</h4>
+                            <p class="text-muted mb-0">With Location</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-phone fa-2x text-success mb-2"></i>
+                            <h4 class="fw-bold text-success">@Model.Count(p => !string.IsNullOrEmpty(p.Phone))</h4>
+                            <p class="text-muted mb-0">With Phone</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-envelope fa-2x text-warning mb-2"></i>
+                            <h4 class="fw-bold text-warning">@Model.Count(p => !string.IsNullOrEmpty(p.Email))</h4>
+                            <p class="text-muted mb-0">With Email</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Donors Table -->
+            <div class="card border-0 shadow-lg">
+                <div class="card-header bg-gradient-primary text-white">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-list me-2"></i>Registered Blood Donors
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th class="border-0 px-3 py-3">
+                                        <i class="fas fa-user me-1"></i>Name
+                                    </th>
+                                    <th class="border-0 px-3 py-3">
+                                        <i class="fas fa-tint me-1"></i>Blood Group
+                                    </th>
+                                    <th class="border-0 px-3 py-3">
+                                        <i class="fas fa-map-marker-alt me-1"></i>Location
+                                    </th>
+                                    <th class="border-0 px-3 py-3">
+                                        <i class="fas fa-phone me-1"></i>Contact
+                                    </th>
+                                    <th class="border-0 px-3 py-3 text-center">
+                                        <i class="fas fa-cogs me-1"></i>Actions
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var person in Model)
+                                {
+                                    <tr>
+                                        <td class="align-middle px-3 py-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-circle me-3">
+                                                    @person.Name.Substring(0, 1).ToUpper()
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-0 fw-bold">@person.Name</h6>
+                                                    <small class="text-muted">ID: @person.Id</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle px-3 py-3">
+                                            <span class="badge bg-danger fs-6 px-3 py-2">@person.BloodGroup</span>
+                                        </td>
+                                        <td class="align-middle px-3 py-3">
+                                            <div>
+                                                <small class="text-muted d-block">@person.Address</small>
+                                                @if (person.Latitude.HasValue && person.Longitude.HasValue)
+                                                {
+                                                    <small class="text-success">
+                                                        <i class="fas fa-map-pin me-1"></i>GPS Available
+                                                    </small>
+                                                }
+                                                else
+                                                {
+                                                    <small class="text-warning">
+                                                        <i class="fas fa-map-pin me-1"></i>No GPS
+                                                    </small>
+                                                }
+                                            </div>
+                                        </td>
+                                        <td class="align-middle px-3 py-3">
+                                            <div>
+                                                @if (!string.IsNullOrEmpty(person.Phone))
+                                                {
+                                                    <div class="mb-1">
+                                                        <a href="tel:@person.Phone" class="text-decoration-none">
+                                                            <i class="fas fa-phone text-success me-1"></i>@person.Phone
+                                                        </a>
+                                                    </div>
+                                                }
+                                                @if (!string.IsNullOrEmpty(person.Email))
+                                                {
+                                                    <div>
+                                                        <a href="mailto:@person.Email" class="text-decoration-none">
+                                                            <i class="fas fa-envelope text-primary me-1"></i>@person.Email
+                                                        </a>
+                                                    </div>
+                                                }
+                                                @if (string.IsNullOrEmpty(person.Phone) && string.IsNullOrEmpty(person.Email))
+                                                {
+                                                    <small class="text-muted">No contact info</small>
+                                                }
+                                            </div>
+                                        </td>
+                                        <td class="align-middle text-center px-3 py-3">
+                                            <div class="btn-group" role="group">
+                                                <a asp-action="Details" asp-route-id="@person.Id" 
+                                                   class="btn btn-sm btn-outline-info" 
+                                                   title="View Details">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a asp-action="Edit" asp-route-id="@person.Id" 
+                                                   class="btn btn-sm btn-outline-warning" 
+                                                   title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a asp-action="Delete" asp-route-id="@person.Id" 
+                                                   class="btn btn-sm btn-outline-danger" 
+                                                   title="Delete">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <!-- Empty State -->
+            <div class="text-center py-5">
+                <div class="card border-0 shadow-lg mx-auto" style="max-width: 500px;">
+                    <div class="card-body p-5">
+                        <i class="fas fa-users fa-5x text-muted mb-4"></i>
+                        <h3 class="fw-bold text-dark mb-3">No Donors Registered Yet</h3>
+                        <p class="text-muted mb-4">
+                            Start building your blood donor network by adding the first person to the system.
+                        </p>
+                        <a asp-action="Create" class="btn btn-primary btn-lg">
+                            <i class="fas fa-user-plus me-2"></i>Add First Donor
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
 </div>
+
+<style>
+.avatar-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.bg-gradient-primary {
+    background: var(--gradient-primary) !important;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(220, 53, 69, 0.05);
+    transform: scale(1.01);
+    transition: all 0.2s ease;
+}
+
+.btn-group .btn {
+    border-radius: 0.375rem;
+    margin: 0 2px;
+}
+
+.btn-group .btn:first-child {
+    border-top-left-radius: 0.375rem;
+    border-bottom-left-radius: 0.375rem;
+}
+
+.btn-group .btn:last-child {
+    border-top-right-radius: 0.375rem;
+    border-bottom-right-radius: 0.375rem;
+}
+</style>

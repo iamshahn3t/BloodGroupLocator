@@ -12,7 +12,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-danger border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-danger border-bottom box-shadow">
             <div class="container-fluid">
                 <a class="navbar-brand text-white fw-bold" asp-area="" asp-controller="Home" asp-action="Index">
                     <i class="fas fa-tint"></i> Blood Group Locator
@@ -53,19 +53,22 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+    
+    <!-- Main Content Wrapper -->
+    <div class="main-content-wrapper">
+        <main role="main" class="pb-5">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted bg-light">
+    <!-- Footer -->
+    <footer class="footer bg-gradient-secondary text-white">
         <div class="container">
-            <div class="row">
+            <div class="row align-items-center py-3">
                 <div class="col-md-6">
-                    &copy; 2025 - Blood Group Locator - <a asp-area="" asp-controller="Home" asp-action="Privacy">About</a>
+                    &copy; 2025 - Blood Group Locator - <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-white text-decoration-none">About</a>
                 </div>
-                <div class="col-md-6 text-end">
+                <div class="col-md-6 text-md-end">
                     <small>Help save lives by connecting blood donors with those in need</small>
                 </div>
             </div>
